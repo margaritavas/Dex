@@ -25,5 +25,16 @@ contract ("Dex", accounts =>{
         assert.equal(balance.toNumber(), 100);
     })
 
+    it("should handle faulty withdraws correctly", async() => {
+        let dex = await Dex.deployed()
+        let link = await Link.deployed()
+        await truffleAssert.reverts(dex.withdraw(500, web3.utils.fromUtf8("LINK")));
+    })
+
+    it("should handle correct withdraws correctly", async() => {
+        let dex = await Dex.deployed()
+        let link = await Link.deployed()
+        await truffleAssert.passes(dex.withdraw(100, web3.utils.fromUtf8("LINK")));
+    })
 
 })
