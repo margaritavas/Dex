@@ -1,4 +1,4 @@
-pragma solidity ^0.8.0;
+pragma solidity ^0.8.3;
 
 import "../node_modules/@openzeppelin/contracts/token/ERC20/IERC20.sol";
 import "../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol";
@@ -31,6 +31,10 @@ function addToken(bytes32 ticker, address tokenAddress) onlyOwner external {
 function deposit(uint amount, bytes32 ticker) tokenExist(ticker) external {
     IERC20(tokenMapping[ticker].tokenAddress).transferFrom(msg.sender, address(this), amount);
     balances[msg.sender][ticker]= balances[msg.sender][ticker].add(amount);
+}
+
+function depositEth() payable external {
+        balances[msg.sender][bytes32("ETH")] = balances[msg.sender][bytes32("ETH")].add(msg.value);
 }
 
 function withdraw(uint amount, bytes32 ticker) tokenExist(ticker) external {
